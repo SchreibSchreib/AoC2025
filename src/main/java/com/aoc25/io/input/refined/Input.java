@@ -26,7 +26,7 @@ public class Input implements InputManipulator {
 
     @Override
     public List<String> getLines() {
-        return List.of(_inputText.split("\n"));
+        return _inputText.lines().toList();
     }
 
     @Override

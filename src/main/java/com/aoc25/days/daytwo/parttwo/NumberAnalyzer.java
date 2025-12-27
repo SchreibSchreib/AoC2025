@@ -36,7 +36,7 @@ public class NumberAnalyzer {
     }
 
     private long analyzeNumbers() {
-        var numberRange = getValidRange(_allPossibleDivisors);
+        var numberRange = getValidNumbers(_allPossibleDivisors);
         return sumNumbers(numberRange);
     }
 
@@ -48,12 +48,33 @@ public class NumberAnalyzer {
         return sum;
     }
 
-    private List<Long> getValidRange(List<Integer> listOfPossibleDivisors) {
+    private List<Long> getValidNumbers(List<Integer> listOfPossibleDivisors) {
         List<Long> validNumbers = new ArrayList<>();
         Long start = Long.parseLong(_startNumber);
         Long end = Long.parseLong(_endNumber);
 
+        for (int number : listOfPossibleDivisors) {
+            String startNumberSubstring = start.toString().substring(0, number);
+            List<String> builtNumbers = buildNumbersFromSubstring(startNumberSubstring, _startNumber.length(),
+                    _endNumber.length());
+        }
         return validNumbers;
+    }
+
+    private List<String> buildNumbersFromSubstring(String startNumberSubstring, int lengthStart, int lengthEnd) {
+        List<String> builtNumbers = new ArrayList<>();
+        int substringLength = startNumberSubstring.length();
+
+        //Bug: startNumberSubstring muss inkrementiert werden, bis Outcome > _endNumber
+        for (; lengthStart <= lengthEnd; lengthStart++) {
+            if (lengthStart % substringLength != 0)
+                continue;
+            int repeatCount = lengthStart / substringLength;
+
+            builtNumbers.add(startNumberSubstring.repeat(repeatCount));
+
+        }
+        return builtNumbers;
     }
 
     public long getValidNumberCount() {

@@ -18,7 +18,7 @@ public class NumberAnalyzer {
     }
 
     private long analyzeNumbers() {
-        var numberRange = getValidRange(_startNumberFirstHalf);
+        var numberRange = getValidNumbers(_startNumberFirstHalf);
         return sumNumbers(numberRange);
     }
 
@@ -30,7 +30,7 @@ public class NumberAnalyzer {
         return sum;
     }
 
-    private List<Long> getValidRange(String startNumberFirstHalf) {
+    private List<Long> getValidNumbers(String startNumberFirstHalf) {
         List<Long> validNumbers = new ArrayList<>();
         Long start = Long.parseLong(_startNumber);
         Long end = Long.parseLong(_endNumber);

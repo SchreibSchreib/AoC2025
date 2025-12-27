@@ -3,6 +3,7 @@ package com.aoc25.io.input.refined;
 import java.util.Deque;
 import java.util.List;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 import com.aoc25.io.input.raw.RessourceInput;
 import com.aoc25.io.input.raw.api.InputSource;
@@ -13,10 +14,12 @@ public class Input implements InputManipulator {
 
     private final InputSource _inputSource;
     private final String _inputText;
+    private final List<String> _inputLines;
 
     public Input(String inputSource) {
         _inputSource = new RessourceInput(inputSource);
         _inputText = _inputSource.readInput();
+        _inputLines = _inputText.lines().toList();
     }
 
     @Override
@@ -26,7 +29,19 @@ public class Input implements InputManipulator {
 
     @Override
     public List<String> getLines() {
-        return _inputText.lines().toList();
+        return _inputLines;
+    }
+
+    @Override
+    public List<String> splitBySeparator(String separator) {
+        List<String> separatorList = new ArrayList<>();
+        for (String line : _inputLines) {
+            String[] splitLines = line.split(separator);
+            for (String splitLine : splitLines) {
+                separatorList.add(splitLine);
+            }
+        }
+        return separatorList;
     }
 
     @Override

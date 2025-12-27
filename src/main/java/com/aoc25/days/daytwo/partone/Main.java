@@ -8,13 +8,15 @@ public class Main {
     private InputManipulator _input;
 
     public Main() {
-        _input = new Input("input/test/DayTwo.txt");
+        _input = new Input("input/puzzle/DayTwo.txt");
     }
 
     public static void main(String[] args) {
         Main dayTwo = new Main();
+        long validNumberCount = 0;
         for (String line : dayTwo._input.splitBySeparator(",")) {
-            System.out.println(line);
+            validNumberCount += new NumberAnalyzer(line.split("-")[0], line.split("-")[1]).getValidNumberCount();
         }
+        System.out.println("Valid number count: " + validNumberCount);
     }
 }

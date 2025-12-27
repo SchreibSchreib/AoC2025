@@ -13,41 +13,34 @@ public class RotationAnalyzer {
     }
 
     private int analyzeRotations(List<String> rotationLines) {
-        int ticksToZeroCount = 0;
-        int currentPosition = _dialStartingPoint;
+        int zeroCounter = 0;
+        int actualPosition = _dialStartingPoint;
 
         for (String line : rotationLines) {
             char direction = line.charAt(0);
-            int degrees = Integer.parseInt(line.substring(1));
-            int fullRotations = getFullRotations(direction, degrees, currentPosition);
-            if (direction == 'L') {
-                if (currentPosition - _dialStartingPoint <= 0) {
-                    // Calculate ticks to zero + full rotations * 100
+            int degrees = Integer.parseInt(line.substring(1).trim());
+            int fullRounds = degrees / _dialEndingPoint;
+            int remainder = degrees % _dialEndingPoint;
+
+            zeroCounter += fullRounds;
+
+            if (remainder != 0) {
+                if (direction == 'L') {
+                    if (actualPosition != 0 && remainder >= actualPosition)
+                        zeroCounter++;
+                    actualPosition = normalizePosition(actualPosition - remainder);
                 } else {
-                    currentPosition -= degrees;
-                    continue;
-                }
-            } else {
-                if (currentPosition + _dialStartingPoint >= 100) {
-                    // Calculate ticks to zero + full rotations * 100
-                } else {
-                    currentPosition += degrees;
-                    continue;
+                    if (actualPosition != 0 && actualPosition + remainder >= _dialEndingPoint)
+                        zeroCounter++;
+                    actualPosition = normalizePosition(actualPosition + remainder);
                 }
             }
         }
-        return ticksToZeroCount;
+        return zeroCounter;
     }
 
-    private int getFullRotations(char direction, int degrees, int currentPosition) {
-        if (degrees < 100) {
-            return 0;
-        }
-        if (direction == 'L') {
-            return (degrees + (0 - currentPosition)) / 100;
-        } else {
-            return (degrees - (currentPosition % _dialEndingPoint)) / 100;
-        }
+    private int normalizePosition(int position) {
+        return Math.floorMod(position, _dialEndingPoint);
     }
 
     public int getDialPositionHitsZero() {

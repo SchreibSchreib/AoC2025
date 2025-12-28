@@ -8,7 +8,7 @@ public class Main {
     private InputManipulator _input;
 
     public Main() {
-        _input = new Input("input/test/DayTwo.txt");
+        _input = new Input("input/puzzle/DayTwo.txt");
     }
 
     public static void main(String[] args) {

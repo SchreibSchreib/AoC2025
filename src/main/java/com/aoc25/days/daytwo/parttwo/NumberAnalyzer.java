@@ -6,37 +6,17 @@ import java.util.List;
 public class NumberAnalyzer {
 
     private final String _startNumber;
-    private final List<Integer> _allPossibleDivisors;
     private final String _endNumber;
     private final long _validNumberCount;
 
     public NumberAnalyzer(String startNumber, String endNumber) {
         _startNumber = startNumber;
         _endNumber = endNumber;
-        _allPossibleDivisors = getPossibleDivisors(_endNumber.length());
         _validNumberCount = analyzeNumbers();
     }
 
-    private List<Integer> getPossibleDivisors(int length) {
-        int limit = (int) Math.sqrt(length);
-        List<Integer> divisors = new ArrayList<>();
-
-        for (int start = 1; start <= limit; start++) {
-            if (length % start == 0) {
-                int firstDivisor = start;
-                int secondDivisor = length / start;
-
-                if (firstDivisor < length)
-                    divisors.add(firstDivisor);
-                if (secondDivisor < length && secondDivisor != firstDivisor)
-                    divisors.add(secondDivisor);
-            }
-        }
-        return divisors;
-    }
-
     private long analyzeNumbers() {
-        var numberRange = getValidNumbers(_allPossibleDivisors);
+        var numberRange = getValidNumbers();
         return sumNumbers(numberRange);
     }
 
@@ -48,33 +28,57 @@ public class NumberAnalyzer {
         return sum;
     }
 
-    private List<Long> getValidNumbers(List<Integer> listOfPossibleDivisors) {
-        List<Long> validNumbers = new ArrayList<>();
-        Long start = Long.parseLong(_startNumber);
-        Long end = Long.parseLong(_endNumber);
+    private List<Long> getValidNumbers() {
+        List<Long> invalidNumbers = new ArrayList<>();
 
-        for (int number : listOfPossibleDivisors) {
-            String startNumberSubstring = start.toString().substring(0, number);
-            List<String> builtNumbers = buildNumbersFromSubstring(startNumberSubstring, _startNumber.length(),
-                    _endNumber.length());
+        long start = Long.parseLong(_startNumber);
+        long end = Long.parseLong(_endNumber);
+        int maxLength = _endNumber.length();
+
+        for (int numberBlockLength = 1; numberBlockLength <= maxLength / 2; numberBlockLength++) {
+            for (int repeatCount = 2; numberBlockLength * repeatCount <= maxLength; repeatCount++) {
+                invalidNumbers.addAll(build(numberBlockLength, repeatCount, start, end));
+            }
         }
-        return validNumbers;
+        return normalize(invalidNumbers);
     }
 
-    private List<String> buildNumbersFromSubstring(String startNumberSubstring, int lengthStart, int lengthEnd) {
-        List<String> builtNumbers = new ArrayList<>();
-        int substringLength = startNumberSubstring.length();
-
-        //Bug: startNumberSubstring muss inkrementiert werden, bis Outcome > _endNumber
-        for (; lengthStart <= lengthEnd; lengthStart++) {
-            if (lengthStart % substringLength != 0)
-                continue;
-            int repeatCount = lengthStart / substringLength;
-
-            builtNumbers.add(startNumberSubstring.repeat(repeatCount));
-
+    private List<Long> normalize(List<Long> invalidNumbers) {
+        List<Long> result = new ArrayList<>();
+        for (Long number : invalidNumbers) {
+            if (!result.contains(number)) {
+                result.add(number);
+            }
         }
-        return builtNumbers;
+        return result;
+    }
+
+    private List<Long> build(int blockLength,
+            int repeatCount,
+            long rangeStart,
+            long rangeEnd) {
+
+        List<Long> result = new ArrayList<>();
+
+        long smallestBlock = (blockLength == 1) ? 1 : (long) Math.pow(10, blockLength - 1);
+        long largestBlock = (long) Math.pow(10, blockLength) - 1;
+
+        for (long blockValue = smallestBlock; blockValue <= largestBlock; blockValue++) {
+
+            String block = Long.toString(blockValue);
+            String candidateString = block.repeat(repeatCount);
+            long candidate = Long.parseLong(candidateString);
+
+            if (candidate > rangeEnd) {
+                break;
+            }
+
+            if (candidate >= rangeStart) {
+                result.add(candidate);
+            }
+        }
+
+        return result;
     }
 
     public long getValidNumberCount() {

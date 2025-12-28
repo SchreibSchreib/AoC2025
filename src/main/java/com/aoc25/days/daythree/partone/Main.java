@@ -8,7 +8,7 @@ public class Main {
     private InputManipulator _input;
 
     public Main() {
-        _input = new Input("input/test/DayThree.txt");
+        _input = new Input("input/puzzle/DayThree.txt");
     }
 
     public static void main(String[] args) {
@@ -17,5 +17,6 @@ public class Main {
         for (String line : dayThree._input.getLines()) {
             result += new LineAnalyzer(line).getResult();
         }
+        System.out.println("Total joltage: " + result);
     }
 }

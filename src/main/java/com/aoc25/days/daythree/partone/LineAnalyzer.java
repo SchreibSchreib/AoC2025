@@ -21,14 +21,15 @@ public class LineAnalyzer {
     }
 
     private int constructJoltage(Map<Integer, List<Integer>> mappedLine) {
+        int builtJoltage = 0;
         for (int key = 9; key > 0; key--) {
             if (!mappedLine.containsKey(key)) {
                 continue;
             }
-            int builtJoltage = buildJoltage(key, mappedLine.get(key));
+            builtJoltage = buildJoltage(key, mappedLine.get(key));
             break;
         }
-        return 1;
+        return builtJoltage;
     }
 
     private int buildJoltage(int key, List<Integer> list) {
@@ -41,35 +42,33 @@ public class LineAnalyzer {
         return (resultLeft > resultRight) ? resultLeft : resultRight;
     }
 
-    //Algorithmus zur Zahlenerstellung -> fehlerhaft
-    
-    // private int buildNumberRight(int key, Integer index) {
-    //     if (index == _line.length() - 1) {
-    //         return key;
-    //     }
-    //     String result = 1 + "" + String.valueOf(key);
-    //     for (int i = index + 1; i < _line.length(); i++) {
-    //         String tempNumber = result.charAt(0) + "" + _line.charAt(i);
-    //         if (Integer.parseInt(result) < Integer.parseInt(tempNumber)) {
-    //             result = tempNumber;
-    //         }
-    //     }
-    //     return Integer.parseInt(result);
-    // }
+    private int buildNumberRight(int key, Integer index) {
+        if (index == _line.length() - 1) {
+            return key;
+        }
+        String result = String.valueOf(key) + "" + 1;
+        for (int i = index + 1; i < _line.length(); i++) {
+            String tempNumber = result.charAt(0) + "" + _line.charAt(i);
+            if (Integer.parseInt(result) < Integer.parseInt(tempNumber)) {
+                result = tempNumber;
+            }
+        }
+        return Integer.parseInt(result);
+    }
 
-    // private int buildNumberLeft(int key, Integer index) {
-    //     if (index == 0) {
-    //         return key;
-    //     }
-    //     String result = String.valueOf(key) + 1;
-    //     for (int i = index - 1; i >= 0; i--) {
-    //         String tempNumber = _line.charAt(i) + "" + result.charAt(0);
-    //         if (Integer.parseInt(result) < Integer.parseInt(tempNumber)) {
-    //             result = tempNumber;
-    //         }
-    //     }
-    //     return Integer.parseInt(result);
-    // }
+    private int buildNumberLeft(int key, Integer index) {
+        if (index == 0) {
+            return key;
+        }
+        String result = 1 + "" + String.valueOf(key);
+        for (int i = index - 1; i >= 0; i--) {
+            String tempNumber = _line.charAt(i) + "" + result.charAt(1);
+            if (Integer.parseInt(result) < Integer.parseInt(tempNumber)) {
+                result = tempNumber;
+            }
+        }
+        return Integer.parseInt(result);
+    }
 
     private Map<Integer, List<Integer>> mapLine(String line) {
         Map<Integer, List<Integer>> result = new HashMap<>();

@@ -55,13 +55,13 @@ public class Input implements InputManipulator {
 
     @Override
     public char[][] getCharMatrix() {
-        String[] lines = _inputText.split("\n");
-        int rowCount = lines.length;
-        int colCount = lines[0].length();
+        List<String> lines = _inputLines;
+        int rowCount = lines.size();
+        int colCount = lines.getFirst().length();
 
         char[][] charMatrix = new char[rowCount][colCount];
         for (int i = 0; i < rowCount; i++) {
-            charMatrix[i] = lines[i].toCharArray();
+            charMatrix[i] = lines.get(i).toCharArray();
         }
         return charMatrix;
     }

@@ -1,4 +1,4 @@
-package com.aoc25.days.daythree.parttwo;
+package com.aoc25.days.day03.parttwo;
 
 import com.aoc25.io.input.refined.api.InputManipulator;
 import com.aoc25.io.input.refined.Input;

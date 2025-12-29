@@ -1,4 +1,4 @@
-package com.aoc25.days.daythree.parttwo;
+package com.aoc25.days.day03.parttwo;
 
 public class LineAnalyzer {
 

@@ -1,4 +1,4 @@
-package com.aoc25.days.daytwo.partone;
+package com.aoc25.days.day02.partone;
 
 import java.util.ArrayList;
 import java.util.List;

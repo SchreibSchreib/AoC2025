@@ -47,8 +47,8 @@ public class Input implements InputManipulator {
     @Override
     public Deque<String> getLinesDeque() {
         Deque<String> linesDeque = new ArrayDeque<>();
-        for (String line : getLines()) {
-            linesDeque.add(line);
+        for (String line : _inputLines) {
+            linesDeque.addLast(line);
         }
         return linesDeque;
     }

@@ -9,11 +9,12 @@ public class Main {
     private InputManipulator _input;
 
     public Main() {
-        _input = new Input("input/test/DaySeven.txt");
+        _input = new Input("input/puzzle/DaySeven.txt");
     }
 
     public static void main(String[] args) {
         Main main = new Main();
-
+        TimeLineAnalyzer analyzer = new TimeLineAnalyzer(main._input.getCharMatrix());
+        System.out.println("Result: " + analyzer.getResult());
     }
 }

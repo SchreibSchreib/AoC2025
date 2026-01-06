@@ -9,12 +9,12 @@ public class Main {
     private InputManipulator _input;
 
     public Main() {
-        _input = new Input("input/puzzle/DayEight.txt");
+        _input = new Input("input/test/DayEight.txt");
     }
 
     public static void main(String[] args) {
         Main main = new Main();
-        pathAnalyzer analyzer = new pathAnalyzer(main._input.getLines());
+        PathAnalyzer analyzer = new PathAnalyzer(main._input.getLines());
         System.out.println("Result: " + analyzer);
     }
 }
